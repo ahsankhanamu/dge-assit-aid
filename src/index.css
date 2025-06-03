@@ -1,0 +1,497 @@
+@import "tailwindcss";
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 217.2 91.2% 59.8%;
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --header-height: 5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 91.2% 59.8%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Black and White Theme */
+  .bw {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 0% 0%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
+    --ring: 0 0% 0%;
+
+    --sidebar-background: 0 0% 95%;
+    --sidebar-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 0%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 90%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 0%;
+    --sidebar-ring: 0 0% 0%;
+  }
+
+  /* High Contrast Mode */
+  .high-contrast {
+    filter: contrast(150%) !important;
+  }
+
+  .high-contrast * {
+    text-shadow: 0 0 1px currentColor !important;
+    border-width: 2px !important;
+  }
+
+  .high-contrast button {
+    border: 2px solid currentColor !important;
+    font-weight: 700 !important;
+  }
+
+  .high-contrast input,
+  .high-contrast textarea,
+  .high-contrast select {
+    border: 2px solid currentColor !important;
+    background-color: var(--background) !important;
+    color: var(--foreground) !important;
+  }
+
+  .high-contrast a {
+    text-decoration: underline !important;
+    font-weight: 600 !important;
+  }
+
+  /* Light theme specific styles */
+  .light {
+    color-scheme: light;
+  }
+
+  /* Dark theme specific styles */
+  .dark {
+    color-scheme: dark;
+  }
+
+  /* B&W theme specific styles */
+  .bw {
+    color-scheme: light;
+  }
+
+  .bw * {
+    border-color: #000 !important;
+  }
+
+  .bw button {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #000 !important;
+  }
+
+  .bw button:hover {
+    background-color: #333 !important;
+  }
+
+  .bw input,
+  .bw textarea,
+  .bw select {
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 2px solid #000 !important;
+  }
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  width: 100vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.required::after {
+  content: "*";
+  color: red;
+  margin-inline-start: 0.25rem;
+}
+
+/* Enhanced Reading Line */
+.accessibility_readingLine #readingLine {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #ff0000 20%,
+    #ff0000 80%,
+    transparent 100%
+  ) !important;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6), 0 0 16px rgba(255, 0, 0, 0.3) !important;
+  transform: translateY(-1.5px) !important;
+  opacity: 0.9 !important;
+  width: 100vw !important;
+  height: 3px !important;
+  position: absolute !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  border-radius: 1px !important;
+}
+
+/* Enhanced Marker Line */
+.accessibility_markerLine #markerLine {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 0, 0.4) 0%,
+    rgba(255, 255, 0, 0.2) 50%,
+    rgba(255, 255, 0, 0.4) 100%
+  ) !important;
+  border: 1px solid rgba(255, 255, 0, 0.6) !important;
+  border-radius: 4px !important;
+  transform: translateY(-14px) !important;
+  opacity: 0.8 !important;
+  width: 100vw !important;
+  height: 28px !important;
+  position: absolute !important;
+  z-index: 9998 !important;
+  pointer-events: none !important;
+  backdrop-filter: blur(1px) !important;
+}
+
+/* Smooth transitions for all theme changes */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+/* Focus indicators for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Enhanced button styles for better accessibility */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+button:hover:before {
+  left: 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Accessibility Features */
+.accessibility_readingLine {
+  position: relative;
+}
+
+.accessibility_markerLine {
+  position: relative;
+}
+
+/* B&W Filter */
+.bw-filter {
+  filter: none !important;
+}
+
+/* Only apply black and white filter when bw theme is active */
+.bw.bw-filter {
+  filter: grayscale(100%) !important;
+}
+
+/* Dark Theme Specific Styles */
+.dark {
+  /* Header */
+  .header-link {
+    @apply text-gray-200 hover:text-white;
+  }
+
+  /* Form Labels */
+  .form-label {
+    @apply text-gray-200;
+  }
+
+  /* Input Fields */
+  .input-field {
+    @apply bg-gray-800 border-gray-700 text-gray-200;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-gray-800 text-white hover:bg-gray-700;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  /* Tables */
+  .table {
+    @apply bg-gray-800 text-gray-200;
+  }
+
+  .table th {
+    @apply bg-gray-700 text-gray-200;
+  }
+
+  .table td {
+    @apply border-gray-700;
+  }
+
+  /* Dropdowns */
+  .dropdown-content {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .dropdown-item {
+    @apply text-gray-200 hover:bg-gray-700;
+  }
+}
+
+/* Theme Transitions */
+.theme-light,
+.theme-dark,
+.theme-bw {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Gradient Backgrounds */
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--background)) 100%
+  );
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
