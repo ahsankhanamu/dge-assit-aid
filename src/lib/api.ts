@@ -94,10 +94,7 @@ async function fetchWithTimeout(
   throw lastError!;
 }
 
-async function api<T>(
-  url: string,
-  options: RequestOptions = {}
-): Promise<T> {
+async function api<T>(url: string, options: RequestOptions = {}): Promise<T> {
   try {
     const response = await fetchWithTimeout(url, {
       ...options,
@@ -108,6 +105,7 @@ async function api<T>(
     });
 
     const data = await response.json();
+    console.log("API Client Response:", data);
     return data as T;
   } catch (error) {
     if (error instanceof ApiError) {

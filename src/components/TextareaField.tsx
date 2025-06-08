@@ -16,6 +16,7 @@ interface TextAreaFieldProps {
   placeholder?: string;
   className?: string;
   rows?: number;
+  children?: React.ReactNode;
 }
 
 const TextAreaField: React.FC<TextAreaFieldProps> = ({
@@ -27,15 +28,19 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   placeholder,
   className,
   rows = 5,
+  children,
 }) => {
   const { t } = useTranslation();
 
   return (
     <div className={cn("space-y-2", className)}>
-      <Label htmlFor={name} className="text-sm font-medium">
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </Label>
+      <div className="flex items-center justify-between">
+        <Label htmlFor={name} className="text-sm font-medium">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </Label>
+        {children}
+      </div>
       <Textarea
         id={name}
         rows={rows}

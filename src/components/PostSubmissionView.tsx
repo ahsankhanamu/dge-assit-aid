@@ -12,6 +12,8 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "./ui/input";
+import { adminEmail } from "@/utils/CONSTANTS";
+import { EMAIL_API } from "@/lib/endpoints";
 
 const PostSubmissionView: React.FC = () => {
   const { formMethods } = useFormContext();
@@ -20,7 +22,7 @@ const PostSubmissionView: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
   const [showSummary, setShowSummary] = useState(false);
-  const [email, setEmail] = useState("ahsankhanamu@gmail.com");
+  const [email, setEmail] = useState(adminEmail);
   const [emailError, setEmailError] = useState("");
   const [isEmailTouched, setIsEmailTouched] = useState(false);
 
@@ -42,20 +44,14 @@ const PostSubmissionView: React.FC = () => {
 
   const handleSendSummary = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_EMAIL_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: "ahsankhanamu@gmail.com",
-          subject: "Financial Assistance needed",
-          isArabic: i18n.language === "ar",
-          data: formatSummary(),
-        }),
+      const response = await EMAIL_API.sendEmail({
+        to: adminEmail,
+        subject: "Financial Assistance needed",
+        isArabic: i18n.language === "ar",
+        data: formatSummary(),
       });
 
-      if (!response.ok) {
+      if (response.error) {
         throw new Error("Failed to send email");
       }
 

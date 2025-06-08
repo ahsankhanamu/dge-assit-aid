@@ -15,11 +15,11 @@ import { Button } from "@/components/ui/button";
 import type { FormData } from "../contexts/FormContext";
 
 const ApplicationWizard: React.FC = () => {
+  const { toast } = useToast();
   const { currentStep, setCurrentStep, formMethods, clearFormData } =
     useFormContext();
   const { formState, trigger, handleSubmit, watch } = formMethods;
   const { t, i18n } = useTranslation();
-  const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isRTL = i18n.dir() === "rtl";
@@ -85,16 +85,6 @@ const ApplicationWizard: React.FC = () => {
 
     if (isValid && isStepValid(currentStep)) {
       setCurrentStep(currentStep + 1);
-      toast({
-        title: t("progressSaved"),
-        description: "",
-      });
-    } else {
-      toast({
-        title: t("validation.pleaseFixErrors"),
-        description: "",
-        variant: "destructive",
-      });
     }
   };
 
@@ -110,27 +100,18 @@ const ApplicationWizard: React.FC = () => {
       const isValid = await trigger(stepFields);
 
       if (!isValid || !isStepValid(currentStep)) {
-        toast({
-          title: t("validation.pleaseFixErrors"),
-          description: "",
-          variant: "destructive",
-        });
         return;
       }
 
       console.log("Submitting application:", data);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast({
-        title: t("applicationSubmitted"),
-        description: "",
-      });
-
       setIsSubmitted(true);
 
       // Clear form after successful submission using the new function
       clearFormData();
     } catch (error) {
+      console.error("Error submitting application:", error);
       toast({
         title: t("error"),
         description: "",

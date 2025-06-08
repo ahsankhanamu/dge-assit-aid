@@ -25,6 +25,9 @@ I've used some pretty cool tech to build this:
   - Type safety (TypeScript is friend)
 - **OpenAI Integration** - Helps users write better applications
 - **Email Service** - Keeps users in the loop about their application status
+  - Powered by Resend API for reliable email delivery
+  - Currently limited to admin emails for demo purposes
+  - Can be extended to send emails to any recipient with proper API key configuration
 
 ## Features 🌟
 
@@ -51,6 +54,18 @@ I've used some pretty cool tech to build this:
 - High contrast mode
 - Clear focus indicators
 - Proper ARIA labels
+- Multiple theme options:
+  - System theme (follows device settings)
+  - Light theme
+  - Dark theme
+  - Black & White theme (in progress)
+- Reading aids:
+  - Reading line (ruler) for tracking text
+  - Marker line for highlighting text
+- Adjustable text size
+- Smooth theme transitions
+- Enhanced focus indicators
+- High contrast mode support
 
 ### 4. Speaks Your Language
 
@@ -105,13 +120,13 @@ It's awesome because:
 1. Clone this at:
 
 ```bash
-git clone https://github.com/ahsankhanmu/assist-aid.git
+git clone https://github.com/ahsankhanmu/dge-assist-aid.git
 ```
 
 2. Install the good stuff:
 
 ```bash
-cd assist-aid
+cd dge-assist-aid
 npm install
 ```
 
@@ -121,30 +136,18 @@ npm install
 .env
 ```
 
-4. Start the dev server:
+You'll need these:
+
+```env
+VITE_OPENAI_API_URL=https://www.yourdomain.com/api/openai
+VITE_EMAIL_API_URL=https://www.yourdomain.com/api/email
+```
+
+6. Start the dev server:
 
 ```bash
 npm run dev
 ```
-
-## Environment Variables 🔑
-
-You'll need these:
-
-```env
-VITE_OPENAI_API_URL=https://www.ahsankhan.dev/api/openai
-VITE_EMAIL_API_URL=https://www.ahsankhan.dev/api/email
-```
-
-## Want to Help? 🤝
-
-Found a bug? Want to add a feature? Here's how:
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add something cool'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## License 📄
 
@@ -165,4 +168,4 @@ Big thanks to:
 
 ---
 
-P.S. If you find any typos or have suggestions, feel free to open an issue or PR. I'm always learning! 😊
+P.S. If you find any typos or have suggestions, feel free to open an issue or PR. I'm always hearing! 😊
