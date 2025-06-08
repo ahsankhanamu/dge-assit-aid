@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark" | "bw" | "system";
+import { Theme } from "@/lib/types";
+import { getActualTheme } from "@/lib/utils";
 
 interface ThemeContextType {
   theme: Theme;
@@ -20,16 +21,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
     return savedTheme;
   });
-
-  // Get the actual theme to apply (resolves system theme)
-  const getActualTheme = (theme: Theme): "light" | "dark" | "bw" => {
-    if (theme === "system") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-    }
-    return theme as "light" | "dark" | "bw";
-  };
 
   // Custom setTheme function that handles localStorage
   const handleThemeChange = (newTheme: Theme) => {

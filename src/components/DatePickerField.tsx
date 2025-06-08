@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { format } from "date-fns";
 import { arSA, enUS } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
 import {
@@ -19,6 +20,7 @@ import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 import { Input } from "@/components/ui/input";
 import { toCamelCase } from "@/utils/stringUtils";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 // Create rtl cache
 const cacheRtl = createCache({
@@ -50,12 +52,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [hasFocused, setHasFocused] = useState(false);
-  const existingTheme = useTheme();
-
-  const theme = React.useMemo(
-    () => createTheme(existingTheme, { direction: isRTL ? "rtl" : "ltr" }),
-    [existingTheme, isRTL]
-  );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const selectedDate = value ? new Date(value) : undefined;
   const currentYear = new Date().getFullYear();
@@ -85,11 +82,25 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
       setHasFocused(true);
     } else {
       handleBlur();
+      // Focus back on the input when closing via any method
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Tab" || event.key === "Escape") {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setIsOpen(true);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      setIsOpen(false);
+      // Focus back on the input after closing
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    } else if (event.key === "Tab") {
       setHasFocused(true);
       handleBlur();
     }
@@ -117,12 +128,11 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
         <PopoverTrigger asChild>
           <div className="relative">
             <Input
+              ref={inputRef}
               type="text"
               readOnly
               value={selectedDate ? formatDate(selectedDate) : ""}
-              placeholder={
-                placeholder ? t(toCamelCase(placeholder)) : t("form.pickADate")
-              }
+              placeholder={placeholder}
               className={cn(
                 "w-full pr-10",
                 !selectedDate && "text-muted-foreground",
@@ -133,16 +143,23 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
               onClick={() => setIsOpen(true)}
               onKeyDown={handleKeyDown}
               onFocus={() => setHasFocused(true)}
+              role="combobox"
+              aria-expanded={isOpen}
+              aria-haspopup="dialog"
+              aria-controls="date-picker-content"
+              aria-label={t("form.pickADate")}
             />
             <CalendarIcon
               className={cn(
                 "h-4 w-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400",
                 isRTL && "right-auto left-3"
               )}
+              aria-hidden="true"
             />
           </div>
         </PopoverTrigger>
         <PopoverContent
+          id="date-picker-content"
           className={`w-auto p-0 ${isRTL ? "text-right" : "text-left"}`}
           align="start"
           dir={isRTL ? "rtl" : "ltr"}
@@ -170,9 +187,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
 
   return (
     <CacheProvider value={cacheRtl}>
-      <ThemeProvider theme={theme}>
-        <div dir="rtl">{content}</div>
-      </ThemeProvider>
+      <div dir="rtl">{content}</div>
     </CacheProvider>
   );
 };

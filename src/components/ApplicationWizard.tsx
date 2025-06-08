@@ -169,15 +169,11 @@ const ApplicationWizard: React.FC = () => {
                         <Button
                           onClick={handlePrevious}
                           variant="outline"
-                          className={`flex items-center gap-2 ${
-                            isRTL ? "flex-row-reverse" : "flex-row"
-                          }`}
+                          className={`flex items-center gap-2`}
                         >
-                          {isRTL ? (
-                            <ChevronRight className="h-4 w-4" />
-                          ) : (
-                            <ChevronLeft className="h-4 w-4" />
-                          )}
+                          <ChevronLeft
+                            className={`h-4 w-4 ${isRTL ? "rotate-180" : ""}`}
+                          />
                           {t("previous")}
                         </Button>
                       )}
@@ -188,11 +184,11 @@ const ApplicationWizard: React.FC = () => {
                           disabled={!isStepValid(currentStep)}
                         >
                           {t("next")}
-                          {isRTL ? (
-                            <ChevronLeft className="h-4 w-4 ml-2" />
-                          ) : (
-                            <ChevronRight className="h-4 w-4 ml-2" />
-                          )}
+                          <ChevronRight
+                            className={`h-4 w-4 ml-2 ${
+                              isRTL ? "rotate-180" : ""
+                            }`}
+                          />
                         </Button>
                       ) : (
                         <Button

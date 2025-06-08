@@ -43,7 +43,7 @@ const FormField: React.FC<FormFieldProps> = ({
         id={name}
         type={type}
         min={min}
-        placeholder={placeholder ? t(toCamelCase(placeholder)) : undefined}
+        placeholder={placeholder}
         className={`w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700 ${
           error
             ? "border-red-500 dark:border-red-500 focus:border-red-500 dark:focus:border-red-500"

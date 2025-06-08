@@ -6,9 +6,11 @@ import AccessibilityMenu from "./AccessibilityMenu";
 import MobileMenu from "./MobileMenu";
 import { Logo_Dge } from "@/icons/svg";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
 
   return (
@@ -17,8 +19,17 @@ const Header: React.FC = () => {
         <MobileMenu />
         {/* Logo Section */}
         <div
-          className={`flex items-center space-x-4`}
+          className={`flex items-center space-x-4 cursor-pointer`}
           aria-label="Primary Logo"
+          onClick={() => navigate("/")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              navigate("/");
+            }
+          }}
+          role="button"
+          tabIndex={0}
         >
           <Logo_Dge />
         </div>

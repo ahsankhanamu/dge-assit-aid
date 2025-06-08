@@ -19,7 +19,7 @@ const createFormSchema = (t: (key: string) => string) =>
     address: z.string().min(1, t("validation.addressRequired")),
     city: z.string().min(1, t("validation.cityRequired")),
     state: z.string().min(1, t("validation.stateRequired")),
-    country: z.string().min(1, t("validation.countryRequired")),
+    country: z.string().min(2, t("validation.countryRequired")),
     phone: z
       .string()
       .min(1, t("validation.phoneRequired"))

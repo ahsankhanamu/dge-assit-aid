@@ -2,6 +2,7 @@ import React from "react";
 import { useFormContext } from "../contexts/FormContext";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 const Sidebar: React.FC = () => {
   const { t } = useTranslation();
@@ -103,48 +104,57 @@ const Sidebar: React.FC = () => {
             {t("subtitle")}
           </p>
         </div>
-
-        <div className="bg-white/80 dark:bg-gray-800/80 rounded-lg p-4">
+        {/* some box shadow */}
+        <div className="bg-gray-50 dark:bg-gray-800/70 rounded-lg p-4 shadow-md">
           <h3 className="font-semibold text-gray-800 dark:text-white mb-4">
             {t("applicationSteps")}
           </h3>
           <div className="relative">
             <div className="space-y-6">
               {steps.map((step, index) => (
-                <div key={step.number} className="relative">
+                <div
+                  key={step.number}
+                  className="relative rounded-lg shadow-sm"
+                >
                   <Button
                     variant={
                       currentStep === step.number ? "secondary" : "ghost"
                     }
-                    className={`w-full justify-start p-3 h-auto relative z-10 ${
+                    className={clsx(
+                      "w-full justify-start p-3 h-auto relative z-10 ",
                       step.number <= currentStep
                         ? "cursor-pointer hover:bg-blue-50"
-                        : "cursor-not-allowed opacity-60"
-                    } ${step.completed ? "bg-green-50 border-green-200" : ""}`}
+                        : "cursor-not-allowed opacity-60",
+                      step.completed
+                        ? "bg-green-50 dark:bg-emerald-900/50 border-green-200"
+                        : "bg-gray-200 dark:bg-white"
+                    )}
                     onClick={() => handleStepClick(step.number)}
                     disabled={step.number > currentStep}
                   >
                     <div className="flex items-center w-full gap-3">
                       <div
-                        className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium relative z-20 ${
+                        className={clsx(
+                          "flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium relative z-20",
                           currentStep === step.number
                             ? "bg-blue-600 text-white"
                             : step.completed
                             ? "bg-green-600 text-white"
                             : step.number < currentStep
                             ? "bg-gray-400 text-white"
-                            : "bg-gray-800 text-gray-200"
-                        }`}
+                            : "bg-gray-600 text-gray-100"
+                        )}
                       >
                         {step.completed ? "✓" : step.number}
                       </div>
                       <div className="text-start">
                         <div
-                          className={`font-medium ${
+                          className={clsx(
+                            "font-medium",
                             currentStep === step.number
                               ? "text-blue-600 dark:text-blue-400"
-                              : "text-gray-700 dark:text-gray-300"
-                          }`}
+                              : "text-gray-900 dark:text-gray-900"
+                          )}
                         >
                           {step.title}
                         </div>
@@ -160,16 +170,20 @@ const Sidebar: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card/80 rounded-lg p-4">
+        {/* Add a background color to the card */}
+        <div className="bg-card/80 rounded-lg p-4 shadow-md">
           <h3 className="font-semibold text-card-foreground mb-3">
             {t("needHelp")}
           </h3>
           <p className="text-sm text-muted-foreground mb-3">
             {t("supportDescription")}
           </p>
-          <button className="text-primary text-sm hover:text-primary/80">
+          <a
+            href="mailto:support@example.com"
+            className="text-primary text-sm hover:text-primary/80"
+          >
             {t("contactSupport")}
-          </button>
+          </a>
         </div>
       </div>
     </aside>

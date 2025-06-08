@@ -1,12 +1,15 @@
-import * as React from "react";
+import React, { useMemo } from "react";
+import { ThemeProvider, createTheme, useTheme } from "@mui/material";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import { useTranslation } from "react-i18next";
-import { cn } from "@/lib/utils";
+import { cn, getActualTheme } from "@/lib/utils";
 import dayjs from "dayjs";
 import "dayjs/locale/ar";
 import "dayjs/locale/en";
+import { useAccessibilityContext } from "@/contexts/AccessibilityContext";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 type CalendarProps = {
   className?: string;
@@ -60,64 +63,54 @@ function Calendar({
     return disabled(date.toDate()) || date.isAfter(today);
   };
 
+  // Light theme
+  const lightTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: "light",
+        },
+        direction: isRTL ? "rtl" : "ltr",
+      }),
+    [isRTL]
+  );
+
+  // Dark theme
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+    },
+    direction: isRTL ? "rtl" : "ltr",
+  });
+
+  const { theme } = useAccessibilityContext();
+  const actualTheme = getActualTheme(theme);
+
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterDayjs}
-      adapterLocale={isRTL ? "ar" : "en"}
-    >
-      <StaticDatePicker
-        value={value}
-        onChange={handleChange}
-        shouldDisableDate={isDisabled}
-        displayStaticWrapperAs="desktop"
-        views={["year", "month", "day"]}
-        maxDate={today}
-        className={cn("w-full", className)}
-        yearsOrder="desc"
-        slotProps={{
-          actionBar: {
-            actions: ["cancel", "accept"],
-          },
-        }}
-        onAccept={handleAccept}
-        sx={{
-          "& .MuiPickersLayout-root": {
-            minWidth: 320,
-            borderRadius: 3,
-            boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-            p: 2,
-          },
-          "& .MuiPickersCalendarHeader-root": {
-            mb: 1,
-            px: 3,
-          },
-          "& .MuiPickersDay-root": {
-            fontWeight: 500,
-            borderRadius: 1,
-            transition: "background 0.2s",
-          },
-          "& .MuiPickersDay-root.Mui-selected": {
-            bgcolor: "primary.main",
-            color: "primary.contrastText",
-          },
-          "& .MuiPickersDay-root:focus": {
-            outline: "2px solid",
-            outlineColor: "primary.main",
-          },
-          "& .MuiDialogActions-root, & .MuiPickersLayout-actionBar": {
-            pb: 1,
-            mt: 0,
-          },
-          "& .MuiPickersLayout-actionBar": {
-            justifyContent: "flex-end",
-          },
-          "& .MuiPickersLayout-contentWrapper": {
-            pb: 0,
-          },
-        }}
-        {...props}
-      />
-    </LocalizationProvider>
+    <ThemeProvider theme={actualTheme === "dark" ? darkTheme : lightTheme}>
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        adapterLocale={isRTL ? "ar" : "en"}
+      >
+        <StaticDatePicker
+          value={value}
+          onChange={handleChange}
+          shouldDisableDate={isDisabled}
+          displayStaticWrapperAs="desktop"
+          views={["year", "month", "day"]}
+          maxDate={today}
+          className={cn("w-full", className)}
+          yearsOrder="desc"
+          slotProps={{
+            actionBar: {
+              actions: ["cancel", "accept"],
+            },
+          }}
+          onAccept={handleAccept}
+          {...props}
+        />
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 }
 

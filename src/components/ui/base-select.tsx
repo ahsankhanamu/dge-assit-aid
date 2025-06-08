@@ -34,7 +34,6 @@ const BaseSelect: React.FC<BaseSelectProps> = ({
   options,
   disabled = false,
 }) => {
-  const { t } = useTranslation();
   const [isTouched, setIsTouched] = useState(false);
   const [hasFocused, setHasFocused] = useState(false);
 

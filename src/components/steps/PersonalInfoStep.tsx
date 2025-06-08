@@ -1,10 +1,9 @@
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "../../contexts/FormContext";
 import FormField from "../FormField";
 import SelectField from "../SelectField";
-import CountrySelect from "../CountrySelect";
+import { COUNTRIES } from "@/data/countries";
 import DatePickerField from "../DatePickerField";
 
 const PersonalInfoStep: React.FC = () => {
@@ -19,7 +18,6 @@ const PersonalInfoStep: React.FC = () => {
     trigger,
   } = formMethods;
 
-  const country = watch("country");
   const dateOfBirth = watch("dateOfBirth");
 
   return (
@@ -104,12 +102,13 @@ const PersonalInfoStep: React.FC = () => {
           required
         />
 
-        <CountrySelect
+        <SelectField
           label={t("fields.country")}
-          value={country as string}
-          onChange={(value) => setValue("country", value)}
-          error={errors.country?.message}
-          onBlur={() => trigger("country")}
+          name="country"
+          control={control}
+          error={errors.country}
+          placeholder={t("selectCountry")}
+          options={COUNTRIES}
           required
         />
 
