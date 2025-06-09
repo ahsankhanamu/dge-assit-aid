@@ -14,6 +14,7 @@ interface SelectFieldProps {
   placeholder?: string;
   control: Control<FormData>;
   disabled?: boolean;
+  value?: string;
 }
 
 const SelectField: React.FC<SelectFieldProps> = ({
@@ -24,6 +25,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
   name,
   placeholder,
   control,
+  value,
   disabled = false,
 }) => {
   const { t } = useTranslation();
@@ -38,7 +40,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
       render={({ field }) => (
         <BaseSelect
           label={label}
-          value={field.value as string}
+          value={(field.value || value) as string}
           onChange={field.onChange}
           onBlur={field.onBlur}
           required={required}

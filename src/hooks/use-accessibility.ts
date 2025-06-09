@@ -71,17 +71,6 @@ export function useAccessibility({
       if (!document.getElementById("readingLine")) {
         const readingLineEl = document.createElement("div");
         readingLineEl.id = "readingLine";
-        readingLineEl.style.cssText = `
-          position: absolute;
-          pointer-events: none;
-          z-index: 9999;
-          width: 100vw;
-          height: 3px;
-          background: linear-gradient(90deg, transparent 0%, #ff0000 50%, transparent 100%);
-          box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
-          left: 0;
-          top: 0;
-        `;
         document.body.appendChild(readingLineEl);
       }
 
@@ -103,18 +92,6 @@ export function useAccessibility({
       if (!document.getElementById("markerLine")) {
         const markerLineEl = document.createElement("div");
         markerLineEl.id = "markerLine";
-        markerLineEl.style.cssText = `
-          position: absolute;
-          pointer-events: none;
-          z-index: 9998;
-          width: 100vw;
-          height: 28px;
-          background: rgba(255, 255, 0, 0.3);
-          border: 1px solid rgba(255, 255, 0, 0.6);
-          left: 0;
-          top: 0;
-          transform: translateY(-14px);
-        `;
         document.body.appendChild(markerLineEl);
       }
 

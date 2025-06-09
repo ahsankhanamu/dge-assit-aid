@@ -69,6 +69,7 @@
   "whatHappensNext": "What Happens Next?",
   "thankYou": "Thank You for Your Application!",
   "applicationReceived": "Your social support application has been successfully submitted. We have received your information and will review it carefully.",
+  "summarySent": "A summary of your application has been sent to your email address.",
   "referenceNumber": "Application Reference Number",
   "saveReference": "Please save this reference number for your records",
   "reviewTime": "Your application will be reviewed within 5-7 business days",
@@ -144,7 +145,6 @@
     "aiSuggestion": "AI Suggestion",
     "editIfNeeded": "Edit if needed",
     "generateNew": "Generate New",
-    "aiGenerationFailed": "Failed to generate AI suggestion. Please check your API key and try again.",
     "minLength": "Must be at least {{count}} characters",
     "maxLength": "Must be at most {{count}} characters",
     "email": "Please enter a valid email address",
@@ -167,7 +167,8 @@
     "emailInUse": "Email is already in use",
     "invalidVerificationCode": "Invalid verification code",
     "verificationCodeExpired": "Verification code has expired",
-    "tooManyAttempts": "Too many attempts. Please try again later"
+    "tooManyAttempts": "Too many attempts. Please try again later",
+    "aiGenerationFailed": "Failed to generate AI suggestion. Please try again."
   },
   "accessibility": {
     "title": "Accessibility Options",
@@ -245,6 +246,7 @@
       "rented": "Rented",
       "shared": "Shared",
       "homeless": "Homeless",
+      "other": "Other",
       "placeholder": "Select Housing Status"
     }
   },

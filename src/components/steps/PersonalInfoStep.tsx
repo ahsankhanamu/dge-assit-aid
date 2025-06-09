@@ -19,6 +19,11 @@ const PersonalInfoStep: React.FC = () => {
   } = formMethods;
 
   const dateOfBirth = watch("dateOfBirth");
+  const genderOptions = [
+    { value: "male", label: t("options.gender.male") },
+    { value: "female", label: t("options.gender.female") },
+    { value: "other", label: t("options.gender.other") },
+  ];
 
   return (
     <div className="space-y-6">
@@ -65,11 +70,8 @@ const PersonalInfoStep: React.FC = () => {
           control={control}
           error={errors.gender}
           placeholder={t("fields.gender")}
-          options={[
-            { value: "male", label: t("options.gender.male") },
-            { value: "female", label: t("options.gender.female") },
-            { value: "other", label: t("options.gender.other") },
-          ]}
+          value={watch("gender")}
+          options={genderOptions}
           required
         />
 
@@ -108,6 +110,7 @@ const PersonalInfoStep: React.FC = () => {
           control={control}
           error={errors.country}
           placeholder={t("selectCountry")}
+          value={watch("country")}
           options={COUNTRIES}
           required
         />

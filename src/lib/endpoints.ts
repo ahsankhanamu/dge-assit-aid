@@ -2,6 +2,7 @@ import { apiClient } from "./api";
 
 interface OpenAIParams {
   prompt: string;
+  promptField: string;
   data: object;
 }
 
@@ -59,6 +60,7 @@ const openAI = {
       import.meta.env.VITE_OPENAI_API_URL,
       {
         prompt: params.prompt,
+        promptField: params.promptField,
         data: params.data,
       }
     );

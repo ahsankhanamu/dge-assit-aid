@@ -75,15 +75,17 @@ const SituationStep: React.FC = () => {
 
       const response = await openAI.generateText({
         prompt: customPrompt,
+        // I should be dynamically add what type of field is it
+        promptField: activeField,
         data: context,
       });
       if (response.choices?.[0]?.message?.content) {
         setSuggestion(response.choices[0].message.content);
       } else {
-        setError(t("errors.generationFailed"));
+        setError(t("errors.aiGenerationFailed"));
       }
     } catch (err) {
-      setError(t("errors.generationFailed"));
+      setError(t("errors.aiGenerationFailed"));
     } finally {
       setLoading(false);
     }

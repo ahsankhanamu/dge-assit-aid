@@ -7,13 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { validateEmail } from "../utils/validation";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Input } from "./ui/input";
-import { adminEmail } from "@/utils/CONSTANTS";
-import { EMAIL_API } from "@/lib/endpoints";
+import { formatApplicationData } from "@/utils/formatters";
 
 const PostSubmissionView: React.FC = () => {
   const { formMethods } = useFormContext();
@@ -22,73 +19,10 @@ const PostSubmissionView: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
   const [showSummary, setShowSummary] = useState(false);
-  const [email, setEmail] = useState(adminEmail);
-  const [emailError, setEmailError] = useState("");
-  const [isEmailTouched, setIsEmailTouched] = useState(false);
 
   const applicationRef = `APP-${Date.now().toString().slice(-8)}`;
 
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-    if (isEmailTouched) {
-      const error = validateEmail(value, t);
-      setEmailError(error || "");
-    }
-  };
-
-  const handleEmailBlur = () => {
-    setIsEmailTouched(true);
-    const error = validateEmail(email, t);
-    setEmailError(error || "");
-  };
-
-  const handleSendSummary = async () => {
-    try {
-      const response = await EMAIL_API.sendEmail({
-        to: adminEmail,
-        subject: "Financial Assistance needed",
-        isArabic: i18n.language === "ar",
-        data: formatSummary(),
-      });
-
-      if (response.error) {
-        throw new Error("Failed to send email");
-      }
-
-      alert("Application summary has been sent to your email!");
-      setShowSummary(false);
-    } catch (error) {
-      console.error("Error sending email:", error);
-      alert("Failed to send email. Please try again.");
-    }
-  };
-
-  const formatSummary = () => {
-    return {
-      [t("personalInformation")]: {
-        [t("name")]: formData.name,
-        [t("nationalId")]: formData.nationalId,
-        [t("dateOfBirth")]: formData.dateOfBirth,
-        [t("gender")]: formData.gender,
-        [t(
-          "address"
-        )]: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
-        [t("phone")]: formData.phone,
-        [t("email")]: formData.email,
-      },
-      [t("familyFinancialInfo")]: {
-        [t("maritalStatus")]: formData.maritalStatus,
-        [t("dependents")]: formData.dependents,
-        [t("employmentStatus")]: formData.employmentStatus,
-        [t("monthlyIncome")]: formData.monthlyIncome,
-      },
-      [t("applicationDetails")]: {
-        [t("financialSituation")]: formData.financialSituation,
-        [t("employmentCircumstances")]: formData.employmentCircumstances,
-        [t("reasonForApplying")]: formData.reasonForApplying,
-      },
-    };
-  };
+  const formatSummary = () => formatApplicationData(formData, t);
 
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center space-y-8">
@@ -104,6 +38,9 @@ const PostSubmissionView: React.FC = () => {
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
           {t("applicationReceived")}
+        </p>
+        <p className="text-md text-gray-600 dark:text-gray-300">
+          {t("summarySent")}
         </p>
       </div>
 
@@ -157,20 +94,24 @@ const PostSubmissionView: React.FC = () => {
 
       {/* Summary Dialog */}
       <Dialog open={showSummary} onOpenChange={setShowSummary}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white dark:bg-gray-800">
-          <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <DialogTitle className="text-gray-900 dark:text-white">
-              {t("viewSummary")}
-            </DialogTitle>
-            <DialogClose asChild>
-              <Button variant="ghost" size="sm" className="p-2 absolute">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </DialogClose>
-          </DialogHeader>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-hidden bg-white dark:bg-gray-800 p-0">
+          <div className="sticky top-0 bg-white dark:bg-gray-800 z-10 border-b dark:border-gray-700">
+            <div className="px-6 py-4">
+              <DialogHeader className="flex flex-row items-center justify-between space-y-0">
+                <DialogTitle className="text-gray-900 dark:text-white">
+                  {t("viewSummary")}
+                </DialogTitle>
+                <DialogClose asChild>
+                  <Button variant="ghost" size="sm" className="p-2 absolute">
+                    <X className="h-4 w-4" />
+                    <span className="sr-only">Close</span>
+                  </Button>
+                </DialogClose>
+              </DialogHeader>
+            </div>
+          </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 overflow-y-auto max-h-[calc(80vh-80px)] px-6 py-4">
             {Object.entries(formatSummary()).map(([section, data]) => (
               <div key={section} className="space-y-3">
                 <h3 className="text-lg font-semibold text-gray-800 dark:text-white border-b dark:border-gray-700 pb-2">
@@ -190,32 +131,6 @@ const PostSubmissionView: React.FC = () => {
                 </div>
               </div>
             ))}
-
-            <div className="border-t dark:border-gray-700 pt-6 space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {t("sendSummaryToEmail")}
-              </h3>
-              <div className="flex gap-3">
-                <div className="flex-1">
-                  <Input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    disabled
-                    className="bg-gray-100 dark:bg-gray-700"
-                    placeholder={t("fields.email")}
-                  />
-                </div>
-                <Button
-                  onClick={handleSendSummary}
-                  className="bg-blue-600 hover:bg-blue-700"
-                  disabled={!!emailError || !email}
-                >
-                  {t("sendSummary")}
-                </Button>
-              </div>
-            </div>
           </div>
         </DialogContent>
       </Dialog>

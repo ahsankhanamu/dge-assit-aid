@@ -3,6 +3,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
+import { COUNTRIES } from "@/data/countries";
 
 // Form validation schema
 const createFormSchema = (t: (key: string) => string) =>
@@ -37,6 +38,7 @@ const createFormSchema = (t: (key: string) => string) =>
       .string()
       .min(1, t("validation.employmentStatusRequired")),
     monthlyIncome: z.number().min(0, t("validation.minZero")),
+    housingStatus: z.string().min(1, t("validation.housingStatusRequired")),
 
     // Situation Description
     financialSituation: z
@@ -89,6 +91,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     dependents: 0,
     employmentStatus: "",
     monthlyIncome: 0,
+    housingStatus: "",
     financialSituation: "",
     employmentCircumstances: "",
     reasonForApplying: "",
@@ -103,7 +106,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { watch, reset, getValues } = formMethods;
 
-  // Load data from localStorage on mount
+  // In FormContext.tsx, modify the useEffect that loads from localStorage
   useEffect(() => {
     const savedData = localStorage.getItem(STORAGE_KEY);
     const savedStep = localStorage.getItem(STEP_STORAGE_KEY);
@@ -111,8 +114,9 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
+        // Ensure Select field values are properly set
         reset(parsedData);
-        console.log("Loaded form data from localStorage:", parsedData);
+        // console.log("Loaded form data from localStorage:", parsedData);
       } catch (error) {
         console.error("Error parsing saved form data:", error);
       }
@@ -122,7 +126,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       const step = parseInt(savedStep, 10);
       if (step >= 1 && step <= 3) {
         setCurrentStepState(step);
-        console.log("Loaded current step from localStorage:", step);
+        // console.log("Loaded current step from localStorage:", step);
       }
     }
   }, [reset]);

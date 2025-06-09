@@ -83,17 +83,6 @@
   }
 }
 
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
-    max-width: none;
-  }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
-}
-
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -168,103 +157,6 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
-  /* Black and White Theme */
-  .bw {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 90%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
-    --accent: 0 0% 90%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 0% 0%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 80%;
-    --input: 0 0% 80%;
-    --ring: 0 0% 0%;
-
-    --sidebar-background: 0 0% 95%;
-    --sidebar-foreground: 0 0% 0%;
-    --sidebar-primary: 0 0% 0%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 90%;
-    --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 0 0% 0%;
-    --sidebar-ring: 0 0% 0%;
-  }
-
-  /* High Contrast Mode */
-  .high-contrast {
-    filter: contrast(150%) !important;
-  }
-
-  .high-contrast * {
-    text-shadow: 0 0 1px currentColor !important;
-    border-width: 2px !important;
-  }
-
-  .high-contrast button {
-    border: 2px solid currentColor !important;
-    font-weight: 700 !important;
-  }
-
-  .high-contrast input,
-  .high-contrast textarea,
-  .high-contrast select {
-    border: 2px solid currentColor !important;
-    background-color: var(--background) !important;
-    color: var(--foreground) !important;
-  }
-
-  .high-contrast a {
-    text-decoration: underline !important;
-    font-weight: 600 !important;
-  }
-
-  /* Light theme specific styles */
-  .light {
-    color-scheme: light;
-  }
-
-  /* Dark theme specific styles */
-  .dark {
-    color-scheme: dark;
-  }
-
-  /* B&W theme specific styles */
-  .bw {
-    color-scheme: light;
-  }
-
-  .bw * {
-    border-color: #000 !important;
-  }
-
-  .bw button {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #000 !important;
-  }
-
-  .bw button:hover {
-    background-color: #333 !important;
-  }
-
-  .bw input,
-  .bw textarea,
-  .bw select {
-    background-color: #fff !important;
-    color: #000 !important;
-    border: 2px solid #000 !important;
-  }
 }
 
 body {
@@ -274,66 +166,10 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.required::after {
-  content: "*";
-  color: red;
-  margin-inline-start: 0.25rem;
-}
-
-/* Enhanced Reading Line */
-.accessibility_readingLine #readingLine {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    #ff0000 20%,
-    #ff0000 80%,
-    transparent 100%
-  ) !important;
-  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6), 0 0 16px rgba(255, 0, 0, 0.3) !important;
-  transform: translateY(-1.5px) !important;
-  opacity: 0.9 !important;
-  width: 100vw !important;
-  height: 3px !important;
-  position: absolute !important;
-  z-index: 9999 !important;
-  pointer-events: none !important;
-  border-radius: 1px !important;
-}
-
-/* Enhanced Marker Line */
-.accessibility_markerLine #markerLine {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 0, 0.4) 0%,
-    rgba(255, 255, 0, 0.2) 50%,
-    rgba(255, 255, 0, 0.4) 100%
-  ) !important;
-  border: 1px solid rgba(255, 255, 0, 0.6) !important;
-  border-radius: 4px !important;
-  transform: translateY(-14px) !important;
-  opacity: 0.8 !important;
-  width: 100vw !important;
-  height: 28px !important;
-  position: absolute !important;
-  z-index: 9998 !important;
-  pointer-events: none !important;
-  backdrop-filter: blur(1px) !important;
-}
-
 /* Smooth transitions for all theme changes */
 * {
   transition: background-color 0.2s ease, color 0.2s ease,
     border-color 0.2s ease !important;
-}
-
-/* Focus indicators for accessibility */
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 3px solid var(--ring) !important;
-  outline-offset: 2px !important;
 }
 
 /* Enhanced button styles for better accessibility */
@@ -362,6 +198,75 @@ button:hover:before {
   left: 100%;
 }
 
+/* Focus indicators for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Light theme specific styles */
+.light {
+  color-scheme: light;
+}
+
+/* Dark theme specific styles */
+.dark {
+  color-scheme: dark;
+}
+
+/* B&W theme specific styles */
+.bw {
+  filter: grayscale(100%) !important;
+}
+
+/* Theme Transitions */
+.theme-light,
+.theme-dark,
+.theme-bw {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Accessibility Features */
+.accessibility_readingLine,
+.accessibility_markerLine {
+  position: relative;
+}
+
+#readingLine {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+  width: 100vw;
+  height: 3px;
+  background-color: #ff0000;
+  border: 1px solid #ff0000;
+  left: 0;
+  top: 0;
+}
+
+#markerLine {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9998;
+  width: 100vw;
+  height: 28px;
+  background: rgba(255, 255, 0, 0.3);
+  border: 1px solid rgba(255, 255, 0, 0.6);
+  left: 0;
+  top: 0;
+  transform: translateY(-1.82rem);
+}
+
+.required::after {
+  content: "*";
+  color: red;
+  margin-inline-start: 0.25rem;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -370,25 +275,6 @@ button:hover:before {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-}
-
-/* Accessibility Features */
-.accessibility_readingLine {
-  position: relative;
-}
-
-.accessibility_markerLine {
-  position: relative;
-}
-
-/* B&W Filter */
-.bw-filter {
-  filter: none !important;
-}
-
-/* Only apply black and white filter when bw theme is active */
-.bw.bw-filter {
-  filter: grayscale(100%) !important;
 }
 
 /* Dark Theme Specific Styles */
@@ -443,13 +329,6 @@ button:hover:before {
   .dropdown-item {
     @apply text-gray-200 hover:bg-gray-700;
   }
-}
-
-/* Theme Transitions */
-.theme-light,
-.theme-dark,
-.theme-bw {
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Gradient Backgrounds */

@@ -10,9 +10,11 @@ import FamilyFinancialStep from "./steps/FamilyFinancialStep";
 import SituationStep from "./steps/SituationStep";
 import PostSubmissionView from "./PostSubmissionView";
 import { useToast } from "../hooks/use-toast";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import type { FormData } from "../contexts/FormContext";
+import { EMAIL_API } from "@/lib/endpoints";
+import { adminEmail } from "@/utils/CONSTANTS";
+import { formatApplicationData } from "@/utils/formatters";
+import { StepFooter } from "./StepFooter";
 
 const ApplicationWizard: React.FC = () => {
   const { toast } = useToast();
@@ -48,6 +50,7 @@ const ApplicationWizard: React.FC = () => {
           "dependents",
           "employmentStatus",
           "monthlyIncome",
+          "housingStatus",
         ] as (keyof FormData)[];
       case 3:
         return [
@@ -103,12 +106,20 @@ const ApplicationWizard: React.FC = () => {
         return;
       }
 
-      console.log("Submitting application:", data);
+      // Send email with application summary
+      const response = await EMAIL_API.sendEmail({
+        to: adminEmail,
+        subject: "Financial Assistance Application Summary",
+        isArabic: i18n.language === "ar",
+        data: formatApplicationData(data, t),
+      });
+
+      if (response.error) {
+        throw new Error("Failed to send email");
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
       setIsSubmitted(true);
-
-      // Clear form after successful submission using the new function
       clearFormData();
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -163,51 +174,14 @@ const ApplicationWizard: React.FC = () => {
                     <div className="max-w-4xl mx-auto">{renderStep()}</div>
                   </div>
 
-                  <div className="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex justify-between">
-                      {currentStep > 1 && (
-                        <Button
-                          onClick={handlePrevious}
-                          variant="outline"
-                          className={`flex items-center gap-2`}
-                        >
-                          <ChevronLeft
-                            className={`h-4 w-4 ${isRTL ? "rotate-180" : ""}`}
-                          />
-                          {t("previous")}
-                        </Button>
-                      )}
-                      {currentStep < 3 ? (
-                        <Button
-                          onClick={handleNext}
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
-                          disabled={!isStepValid(currentStep)}
-                        >
-                          {t("next")}
-                          <ChevronRight
-                            className={`h-4 w-4 ml-2 ${
-                              isRTL ? "rotate-180" : ""
-                            }`}
-                          />
-                        </Button>
-                      ) : (
-                        <Button
-                          onClick={handleFormSubmit}
-                          className="bg-green-600 hover:bg-green-700 text-white"
-                          disabled={!isStepValid(currentStep) || isSubmitting}
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              {t("submitting")}
-                            </>
-                          ) : (
-                            t("submit")
-                          )}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                  <StepFooter
+                    currentStep={currentStep}
+                    isStepValid={isStepValid(currentStep)}
+                    isSubmitting={isSubmitting}
+                    onPrevious={handlePrevious}
+                    onNext={handleNext}
+                    onSubmit={handleFormSubmit}
+                  />
                 </form>
               ) : (
                 <PostSubmissionView />

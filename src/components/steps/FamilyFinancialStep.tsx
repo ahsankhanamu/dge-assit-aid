@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "../../contexts/FormContext";
@@ -18,6 +17,36 @@ const FamilyFinancialStep: React.FC = () => {
   const employmentStatus = watch("employmentStatus");
   const isUnemployed = employmentStatus === "unemployed";
 
+  const employmentStatusOptions = [
+    {
+      value: "employed",
+      label: t("options.employmentStatus.employed"),
+    },
+    {
+      value: "unemployed",
+      label: t("options.employmentStatus.unemployed"),
+    },
+    {
+      value: "self-employed",
+      label: t("options.employmentStatus.selfEmployed"),
+    },
+    { value: "retired", label: t("options.employmentStatus.retired") },
+    { value: "student", label: t("options.employmentStatus.student") },
+  ];
+
+  const maritalStatusOptions = [
+    { value: "single", label: t("options.maritalStatus.single") },
+    { value: "married", label: t("options.maritalStatus.married") },
+    { value: "divorced", label: t("options.maritalStatus.divorced") },
+    { value: "widowed", label: t("options.maritalStatus.widowed") },
+  ];
+
+  const housingStatusOptions = [
+    { value: "owned", label: t("options.housingStatus.owned") },
+    { value: "rented", label: t("options.housingStatus.rented") },
+    { value: "homeless", label: t("options.housingStatus.other") },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
@@ -33,12 +62,7 @@ const FamilyFinancialStep: React.FC = () => {
           control={control}
           placeholder={t("fields.maritalStatus")}
           error={errors.maritalStatus}
-          options={[
-            { value: "single", label: t("options.maritalStatus.single") },
-            { value: "married", label: t("options.maritalStatus.married") },
-            { value: "divorced", label: t("options.maritalStatus.divorced") },
-            { value: "widowed", label: t("options.maritalStatus.widowed") },
-          ]}
+          options={maritalStatusOptions}
           required
         />
 
@@ -59,22 +83,7 @@ const FamilyFinancialStep: React.FC = () => {
           name="employmentStatus"
           control={control}
           error={errors.employmentStatus}
-          options={[
-            {
-              value: "employed",
-              label: t("options.employmentStatus.employed"),
-            },
-            {
-              value: "unemployed",
-              label: t("options.employmentStatus.unemployed"),
-            },
-            {
-              value: "self-employed",
-              label: t("options.employmentStatus.selfEmployed"),
-            },
-            { value: "retired", label: t("options.employmentStatus.retired") },
-            { value: "student", label: t("options.employmentStatus.student") },
-          ]}
+          options={employmentStatusOptions}
           required
         />
 
@@ -88,6 +97,16 @@ const FamilyFinancialStep: React.FC = () => {
           min={0}
           required={!isUnemployed}
           disabled={isUnemployed}
+        />
+
+        <SelectField
+          label={t("fields.housingStatus")}
+          placeholder={t("fields.housingStatus")}
+          name="housingStatus"
+          control={control}
+          error={errors.housingStatus}
+          options={housingStatusOptions}
+          required
         />
       </div>
     </div>
