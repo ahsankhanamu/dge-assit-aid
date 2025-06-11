@@ -15,20 +15,27 @@ const LanguageSwitcher = () => {
     [i18n]
   );
 
-  useEffect(() => {
+  const getLocalStorageLanguage = useCallback(() => {
     const savedLanguage = localStorage.getItem("language");
     if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ar")) {
-      changeLanguage(savedLanguage);
+      return savedLanguage;
     }
-  }, [changeLanguage]);
+    return "en";
+  }, []);
+
+  useEffect(() => {
+    changeLanguage(getLocalStorageLanguage());
+  }, [changeLanguage, getLocalStorageLanguage]);
 
   return (
     <div className="flex items-center gap-2">
       <Button
-        onClick={() => changeLanguage(i18n.language === "en" ? "ar" : "en")}
+        onClick={() =>
+          changeLanguage(getLocalStorageLanguage() === "en" ? "ar" : "en")
+        }
         variant="link"
       >
-        {i18n.language === "en" ? "عربي" : "EN"}
+        {getLocalStorageLanguage() === "en" ? "عربي" : "EN"}
       </Button>
     </div>
   );

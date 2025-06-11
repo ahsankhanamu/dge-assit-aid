@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFormContext } from "../contexts/FormContext";
 import { useTranslation } from "react-i18next";
+import { toast, Toaster } from "sonner";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
@@ -9,7 +10,6 @@ import PersonalInfoStep from "./steps/PersonalInfoStep";
 import FamilyFinancialStep from "./steps/FamilyFinancialStep";
 import SituationStep from "./steps/SituationStep";
 import PostSubmissionView from "./PostSubmissionView";
-import { useToast } from "../hooks/use-toast";
 import type { FormData } from "../contexts/FormContext";
 import { EMAIL_API } from "@/lib/endpoints";
 import { adminEmail } from "@/utils/CONSTANTS";
@@ -17,7 +17,6 @@ import { formatApplicationData } from "@/utils/formatters";
 import { StepFooter } from "./StepFooter";
 
 const ApplicationWizard: React.FC = () => {
-  const { toast } = useToast();
   const { currentStep, setCurrentStep, formMethods, clearFormData } =
     useFormContext();
   const { formState, trigger, handleSubmit, watch } = formMethods;
@@ -123,11 +122,7 @@ const ApplicationWizard: React.FC = () => {
       clearFormData();
     } catch (error) {
       console.error("Error submitting application:", error);
-      toast({
-        title: t("error"),
-        description: "",
-        variant: "destructive",
-      });
+      toast.error(t("error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -154,6 +149,7 @@ const ApplicationWizard: React.FC = () => {
         isRTL ? "font-arabic" : ""
       }`}
     >
+      <Toaster position={isRTL ? "bottom-left" : "bottom-right"} richColors />
       <Header />
 
       <div className={`flex mt-[var(--header-height)] w-full`}>

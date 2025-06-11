@@ -70,7 +70,6 @@ const PersonalInfoStep: React.FC = () => {
           control={control}
           error={errors.gender}
           placeholder={t("fields.gender")}
-          value={watch("gender")}
           options={genderOptions}
           required
         />
@@ -110,7 +109,6 @@ const PersonalInfoStep: React.FC = () => {
           control={control}
           error={errors.country}
           placeholder={t("selectCountry")}
-          value={watch("country")}
           options={COUNTRIES}
           required
         />

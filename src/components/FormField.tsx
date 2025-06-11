@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UseFormRegister, FieldError } from "react-hook-form";
 import { FormData } from "@/contexts/FormContext";
-import { toCamelCase } from "@/utils/stringUtils";
 
 interface FormFieldProps {
   label: string;

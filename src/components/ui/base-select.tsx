@@ -65,12 +65,6 @@ const BaseSelect: React.FC<BaseSelectProps> = ({
         value={value}
         onValueChange={(newValue) => {
           onChange(newValue);
-          setHasFocused(true);
-          setIsTouched(true);
-          // Trigger validation after selection
-          if (onBlur) {
-            setTimeout(() => onBlur(), 0);
-          }
         }}
         disabled={disabled}
         onOpenChange={(open) => {
@@ -88,6 +82,7 @@ const BaseSelect: React.FC<BaseSelectProps> = ({
               : ""
           } ${className}`}
           onFocus={() => setHasFocused(true)}
+          onBlur={handleBlur}
           onKeyDown={handleKeyDown}
         >
           <SelectValue placeholder={placeholder} />
