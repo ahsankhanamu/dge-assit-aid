@@ -56,6 +56,7 @@ const FormField: React.FC<FormFieldProps> = ({
           required: required ? t("validation.required") : false,
           valueAsNumber: type === "number",
         })}
+        error={error}
       />
       {error && <p className="text-sm text-red-500 mt-1">{error.message}</p>}
     </div>
